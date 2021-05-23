@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item label="验证码" prop="code" style="width: 380px ">
           <el-input v-model="loginForm.code" style="width: 152px;float: left"></el-input>
-          <el-image :src="captchaImg"  class="captchaImg"></el-image>
+          <el-image :src="captchaImg" class="captchaImg"></el-image>
         </el-form-item>
 
 
@@ -57,7 +57,7 @@ export default {
           {required: true, message: '请输入密码', trigger: 'change'}
         ],
         code: [
-          {type: 'date', required: true, message: '请填写验证码', trigger: 'change'},
+          { required: true, message: '请填写验证码', trigger: 'change'},
           {min: 5, max: 5, message: '长度在 为 5 个字符', trigger: 'blur'}
         ]
       },
@@ -69,6 +69,9 @@ export default {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           this.$axios.post('/login', this.loginForm).then(res => {
+            const jwt = res.headers['authorization']
+            this.$store.commit('SET_TOKEN',jwt)
+            this.$router.push("/index")
 
           })
         } else {
@@ -104,9 +107,11 @@ export default {
   display: flex;
   align-items: center;
 }
-.row-bg>.el-col>.el-form>.el-form-item> .el-form-item__content{
+
+.row-bg > .el-col > .el-form > .el-form-item > .el-form-item__content {
   display: flex !important;
 }
+
 .el-divider {
   height: 200px;
 }
