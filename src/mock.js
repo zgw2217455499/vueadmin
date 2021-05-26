@@ -29,6 +29,10 @@ Mock.mock('/sys/userInfo', 'get', () => {
     }
     return Result
 })
+Mock.mock('/logout', 'post', () => {
+
+    return Result
+})
 // 获取用户菜单以及权限接口
 Mock.mock('/sys/menu/nav', 'get', () => {
 
@@ -47,7 +51,7 @@ Mock.mock('/sys/menu/nav', 'get', () => {
                     path: '/sys/users',
                     component: 'sys/User',
                     children: []
-                },
+                 },
                 {
                     name: 'SysRole',
                     title: '角色管理',

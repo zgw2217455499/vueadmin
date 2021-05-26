@@ -22,7 +22,7 @@
               </el-dropdown-item>
 
               <el-dropdown-item>
-                退出
+                <el-dropdown-item @click.native="logout">退出</el-dropdown-item>
               </el-dropdown-item>
 
             </el-dropdown-menu>
@@ -31,22 +31,27 @@
           <el-link href="https://www.bilibili.com/" target="_blank">B站</el-link>
         </div>
       </el-header>
+
       <el-main>
-        <router-view></router-view>
+        <Tabs></Tabs>
+        <router-view/>
+<!--        <div style="margin: 0 15px;">-->
+<!--          <router-view/>-->
+<!--        </div>-->
       </el-main>
+
     </el-container>
   </el-container>
 </template>
 
 <script>
-import SideMenu from "@/views/inc/SideMenu";
+import SideMenu from "./inc/SideMenu";
+import Tabs from "./inc/Tabs";
 
 export default {
   name: "Home",
-  components: {SideMenu},
-  comments: {
-    SideMenu
-  }, data() {
+  components: {SideMenu,Tabs},
+  data() {
     return {
       userInfo: {
         id: "",
@@ -63,8 +68,19 @@ export default {
       this.$axios.get("/sys/userInfo").then(res => {
         this.userInfo = res.data.data
       })
+    },
+    logout() {
+      this.$axios.post("/logout").then(res => {
+        localStorage.clear()
+        sessionStorage.clear()
+
+        this.$store.commit("resetState")
+
+        this.$router.push("/login")
+      })
     }
   }
+
 }
 </script>
 
@@ -103,7 +119,8 @@ export default {
 .el-main {
   color: #333;
   text-align: center;
-  line-height: 160px;
+  /*line-height: 160px;*/
+  padding: 0;
 }
 
 
